@@ -1,6 +1,6 @@
 package model.account;
 
-import model.exceptions.DomainException;
+import model.exceptions.BusinessException;
 
 public class Account {
 
@@ -21,16 +21,8 @@ public class Account {
 	}
 	
 	public void withdraw(Double amount) {
-		if(amount > withdrawLimit) {
-			throw new DomainException("The amount exceeds withdraw limit.");
-		}
-		if (amount <= withdrawLimit || amount <= balance) {
-			balance -= amount;
-		}
-		if (amount > balance) {
-			throw new DomainException("Not wnough balance.");
-		}
-		
+		validateWithdraw(amount);
+		balance -= amount;
 	}
 
 	public Integer getNumber() {
@@ -64,5 +56,13 @@ public class Account {
 	public void setWithdrawLimit(Double withdrawLimit) {
 		this.withdrawLimit = withdrawLimit;
 	}
-
+	
+	private void validateWithdraw(double amount) {
+		if(amount > getWithdrawLimit()) {
+			throw new BusinessException("The amount exceeds withdraw limit.");
+		}
+		if (amount > getBalance()) {
+			throw new BusinessException("Not enough balance.");
+		}
+	}
 }

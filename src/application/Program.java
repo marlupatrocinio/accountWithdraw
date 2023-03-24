@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import model.account.Account;
-import model.exceptions.DomainException;
+import model.exceptions.BusinessException;
 
 public class Program {
 
@@ -13,7 +13,7 @@ public class Program {
 		Scanner sc = new Scanner(System.in);
 		Locale.setDefault(Locale.US);
 		
-		try{
+		
 			System.out.println("Enter account data");
 			System.out.println("Number:");
 			int number = sc.nextInt();
@@ -32,8 +32,11 @@ public class Program {
 			double amount = sc.nextInt();
 			account.withdraw(amount);
 			System.out.println("New balance: " + account.getBalance());
-		}
-		catch(DomainException e) {
+			try{	
+				account.withdraw(amount);
+				System.out.printf("New Balance: %.2f%n", account.getBalance());
+	}
+		catch(BusinessException e) {
 			System.out.println("Withdraw error: " + e.getMessage());
 		}
 		catch(RuntimeException e) {
